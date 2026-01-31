@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Internet Personality Test</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+:root {
+  --grad: linear-gradient(135deg,#ff6ec4,#7873f5,#2af598,#f9d423);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: "Poppins", system-ui, sans-serif;
+  background: var(--grad);
+  background-size: 500% 500%;
+  animation: bgMove 14s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  overflow: hidden;
+}
+
+@keyframes bgMove {
+  0% {background-position:0% 50%;}
+  50% {background-position:100% 50%;}
+  100% {background-position:0% 50%;}
+}
+
+/* Glass Card */
+.card {
+  width: 92%;
+  max-width: 420px;
+  padding: 32px;
+  border-radius: 28px;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 60px rgba(255,255,255,0.35);
+  text-align: center;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+h1 {
+  margin-bottom: 10px;
+  text-shadow: 0 0 18px rgba(255,255,255,0.7);
+}
+
+p {
+  opacity: 0.9;
+  margin-bottom: 24px;
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 18px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.primary {
+  background: black;
+  color: white;
+}
+
+.secondary {
+  background: rgba(255,255,255,0.9);
+  color: black;
+}
+
+button:hover {
+  transform: scale(1.06);
+}
+
+/* Toast */
+#toast {
+  position: fixed;
+  bottom: 28px;
+  background: black;
+  padding: 14px 22px;
+  border-radius: 30px;
+  display: none;
+  box-shadow: 0 0 25px rgba(255,255,255,0.4);
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Sparkles */
+.sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  animation: sparkle 1s linear forwards;
+}
+
+@keyframes sparkle {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-120px); opacity: 0; }
+}
+
+.hidden { display: none; }
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div class="card" id="page1">
+  <h1>🧠 Internet Personality Test</h1>
+  <p>
+    This AI knows you better than your screen time.<br>
+    Proceed responsibly.
+  </p>
+
+  <button class="primary" onclick="nextPage()">Start Test</button>
+  <button class="secondary" onclick="toast('Lying already 😐')">I’m normal</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="card hidden" id="page2">
+  <h1>🤖 AI Analyzing…</h1>
+  <p>Reading vibes… judging silently…</p>
+  <button class="primary" onclick="analyze()">Analyze Me</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="card hidden" id="page3">
+  <h1 id="resultTitle"></h1>
+  <p id="resultText"></p>
+  <button class="primary" onclick="restart()">Retake (validation needed)</button>
+</div>
+
+<div id="toast"></div>
+
+<!-- SOUND -->
+<audio id="clickSound">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-game-click-1114.mp3" />
+</audio>
+
+<script>
+const pages = ["page1","page2","page3"];
+const toastBox = document.getElementById("toast");
+const clickSound = document.getElementById("clickSound");
+
+function playSound() {
+  clickSound.currentTime = 0;
+  clickSound.play();
+}
+
+function toast(text) {
+  toastBox.innerText = text;
+  toastBox.style.display = "block";
+  setTimeout(() => toastBox.style.display = "none", 2600);
+}
+
+function sparkleBurst() {
+  for (let i = 0; i < 24; i++) {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.bottom = "0px";
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 1000);
+  }
+}
+
+function nextPage() {
+  playSound();
+  document.getElementById("page1").classList.add("hidden");
+  document.getElementById("page2").classList.remove("hidden");
+}
+
+function analyze() {
+  playSound();
+  toast("Consulting last two brain cells 🧠🧠");
+  sparkleBurst();
+  setTimeout(showResult, 2000);
+}
+
+function showResult() {
+  document.getElementById("page2").classList.add("hidden");
+  document.getElementById("page3").classList.remove("hidden");
+
+  const results = [
+    ["✨ Main Character", "Delusional confidence but somehow it’s working."],
+    ["🧃 Soft-Launch Era", "Potential detected. Needs caffeine."],
+    ["😈 Chaotic Neutral", "You choose violence, but politely."],
+    ["💀 Chronically Online", "Go touch grass. Respectfully."],
+    ["🧠 Low-Key Genius", "Overthinks everything. Still slays."]
+  ];
+
+  const r = results[Math.floor(Math.random() * results.length)];
+  document.getElementById("resultTitle").innerText = r[0];
+  document.getElementById("resultText").innerText = r[1];
+}
+
+function restart() {
+  playSound();
+  document.getElementById("page3").classList.add("hidden");
+  document.getElementById("page1").classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
