@@ -1,0 +1,82 @@
+:root {
+  --grad: linear-gradient(135deg,#ff6ec4,#7873f5,#2af598,#f9d423);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: Poppins, system-ui, sans-serif;
+}
+
+.container {
+  height: 100vh;
+  background: var(--grad);
+  background-size: 500% 500%;
+  animation: bgMove 14s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+@keyframes bgMove {
+  0% {background-position:0% 50%;}
+  50% {background-position:100% 50%;}
+  100% {background-position:0% 50%;}
+}
+
+.card {
+  width: 92%;
+  max-width: 420px;
+  padding: 32px;
+  border-radius: 28px;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 60px rgba(255,255,255,0.35);
+  text-align: center;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 18px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.primary {
+  background: black;
+  color: white;
+}
+
+.secondary {
+  background: rgba(255,255,255,0.9);
+  color: black;
+}
+
+button:hover {
+  transform: scale(1.06);
+}
+
+.toast {
+  position: fixed;
+  bottom: 30px;
+  background: black;
+  padding: 14px 22px;
+  border-radius: 30px;
+  box-shadow: 0 0 25px rgba(255,255,255,0.4);
+}
